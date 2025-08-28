@@ -59,7 +59,29 @@ end
 
 ## First-Week Promotional Logic
 
-### Launch Package Qualification
+### Two Separate Promotional Systems
+**Location**: `app/controllers/d2d/account/devices_controller.rb:144-154`
+
+The system implements **two mutually exclusive promotional systems**:
+
+```ruby
+if !Rails.configuration.config.enable_launch_package && uuid.present?
+  response = account.samsclub_bonus_2021_availability(uuid)
+  arcade_info[:bonus] = true if response[:available] == true
+end
+
+if account.launch_package_qualified?(arcade_info)
+  Account.delay.give_launch_complimantary(account.account_id, arcade_info.try(:[], :binding_info).try(:[], :uuid))
+  PremiumSubscriptionActivity.write_procedure_init(account)
+end
+```
+
+### System 1: Legacy SamsClub Bonus System
+**Activation**: When `enable_launch_package = false`
+**Target**: SamsClub retailer-specific promotions
+**Method**: `account.samsclub_bonus_2021_availability(uuid)`
+
+### System 2: Modern Launch Package System
 **Location**: `app/models/concerns/launch_package.rb:27-38`
 
 **Qualification Criteria**:
@@ -75,7 +97,7 @@ end
 ```
 
 **Business Rules**:
-1. **Feature Flag**: `enable_launch_package` must be enabled
+1. **Feature Flag**: `enable_launch_package` must be enabled (opposite of SamsClub system)
 2. **Retailer Whitelist**: Only specific retailers qualify (Samclub, Walmart, ATG, ATGCS)
 3. **Account Blacklist**: Certain accounts are excluded from promotions
 4. **One-Time Offer**: Account must not have received launch package previously
@@ -105,7 +127,7 @@ end
 - **End Date**: Start date + promotional period
 - **No Renewal**: `stop_renewing_at: Time.current` prevents automatic renewal
 
-## Week One Deals Implementation
+## Week One Deals Implementation (Modern Launch Package System)
 
 ### Promotional Subscription Creation
 **Location**: `app/models/concerns/launch_package.rb:59-82`
@@ -211,9 +233,11 @@ end
 
 ### For "Week One Deals"
 1. **Timing Accuracy**: System accurately tracks first login, not purchase date
-2. **Retailer Restrictions**: Only qualified retailers enable promotional offers
-3. **Account Limitations**: One promotional period per account, regardless of multiple machines
-4. **Duration Flexibility**: Promotional periods configurable per deployment
+2. **Dual Promotional Systems**: Legacy SamsClub system vs Modern Launch Package system (mutually exclusive)
+3. **Retailer Restrictions**: Only qualified retailers enable promotional offers
+4. **Account Limitations**: One promotional period per account, regardless of multiple machines
+5. **Duration Flexibility**: Promotional periods configurable per deployment
+6. **System Selection**: Configuration flag `enable_launch_package` determines which promotional system is active
 
 ### For System Reconstruction
 1. **Critical Data**: UUID binding timestamp is essential for promotional logic
