@@ -1,0 +1,270 @@
+---
+description: AI Assistant development process with context notes methodology for maintaining code continuity and preventing accidental breakage
+globs: "**/*"
+alwaysApply: true
+---
+
+# Cursor AI Development Process
+
+## **Core Principle: Self-Documenting AI Context**
+
+AI assistants must maintain context across sessions and file modifications. Use comprehensive context notes to prevent accidental breakage and maintain development continuity.
+
+## **Phase 1: AI Assistant Context Notes (MANDATORY)**
+
+### **1.1 Context Notes for All AI-Created Files**
+**ALWAYS add AI Assistant Context Notes block at the top of files you create or significantly modify:**
+
+```javascript
+// ========================================
+// AI ASSISTANT CONTEXT NOTES
+// ========================================
+//
+// PURPOSE OF THIS FILE:
+// [Explain what this file does and why it exists]
+//
+// KEY FIXES IMPLEMENTED:
+// 1. FIXED: [Specific issue] - [Why this fix was needed]
+// 2. FIXED: [Another issue] - [Explanation]
+//
+// CRITICAL REQUIREMENTS:
+// - [Important constraint or requirement]
+// - [Another critical requirement]
+//
+// MAINTENANCE NOTES:
+// - [What to watch out for when modifying]
+// - [Dependencies or side effects]
+// - [Testing requirements]
+//
+// ========================================
+```
+
+### **1.2 Function-Level Context Notes**
+**For complex functions, add context notes explaining:**
+
+```javascript
+/**
+ * AI CONTEXT: [Function Name]
+ * 
+ * PURPOSE: What this function is supposed to accomplish
+ * 
+ * INPUTS:
+ * - param1 (type): Description and expected format
+ * - param2 (type): Description and constraints
+ * 
+ * OUTPUTS:
+ * - Success: Returns [type] with [structure]
+ * - Error: Returns [type] or throws [exception type]
+ * - Edge cases: [Describe special return conditions]
+ * 
+ * SIDE EFFECTS:
+ * - Modifies [what global state/variables]
+ * - Calls [what external functions/APIs]
+ * 
+ * FIXES APPLIED:
+ * - [Date]: Fixed [issue] - [explanation]
+ * - [Date]: Modified [behavior] - [reason]
+ * 
+ * TESTING NOTES:
+ * - Test with [specific input types]
+ * - Verify [specific behaviors]
+ * - Watch for [potential failure modes]
+ */
+function complexFunction(param1, param2) {
+    // Implementation
+}
+```
+
+### **1.3 Configuration and Data Structure Notes**
+**For configuration objects and data structures:**
+
+```javascript
+// AI CONTEXT: Configuration Object
+// PURPOSE: Central configuration for [system name]
+// STRUCTURE: Each property controls [specific behavior]
+// DEPENDENCIES: Used by [list of files/functions]
+// MODIFICATION RULES:
+// - Never change [specific properties] without updating [dependent systems]
+// - Boolean flags control [specific behaviors]
+// - Nested objects represent [hierarchical relationships]
+const config = {
+    // Property explanations inline
+    enableFeatureX: true,    // Controls [specific behavior]
+    dataStructure: {         // Defines [relationship type]
+        // Nested explanations
+    }
+};
+```
+
+## **Phase 2: Development Workflow with Context Preservation**
+
+### **2.1 Before Modifying Existing Code**
+**MANDATORY steps before changing AI-created code:**
+
+1. **Read existing context notes** - Understand purpose and constraints
+2. **Identify dependencies** - What other code relies on this?
+3. **Check for fixes** - What issues were previously resolved?
+4. **Plan modifications** - How to preserve existing functionality?
+5. **Update context notes** - Document new changes and reasoning
+
+### **2.2 When Creating New Functions**
+**For every new function:**
+
+1. **Define clear purpose** - What problem does this solve?
+2. **Document inputs/outputs** - What goes in, what comes out?
+3. **Identify side effects** - What else does this affect?
+4. **Plan for testing** - How will you verify it works?
+5. **Add context notes** - Full AI context block
+
+### **2.3 When Debugging Issues**
+**When fixing bugs in AI-created code:**
+
+1. **Read context notes first** - Understand original intent
+2. **Identify root cause** - Why did the original approach fail?
+3. **Preserve working parts** - Don't break existing functionality
+4. **Document the fix** - Add to "FIXES APPLIED" section
+5. **Update testing notes** - How to prevent regression
+
+## **Phase 3: Context Note Templates by File Type**
+
+### **3.1 Compilation/Build Scripts**
+```javascript
+// ========================================
+// AI ASSISTANT CONTEXT NOTES
+// ========================================
+//
+// PURPOSE OF THIS FILE:
+// This script solves [specific build problem] by [approach]
+//
+// KEY FIXES IMPLEMENTED:
+// 1. FIXED: [Build issue] - [Technical explanation]
+// 2. FIXED: [Integration problem] - [Solution approach]
+//
+// CRITICAL BUILD REQUIREMENTS:
+// - Input files must have [specific format]
+// - Output must conform to [standard/specification]
+// - Process must handle [edge cases]
+//
+// COMPILATION PROCESS:
+// 1. [Step 1 description]
+// 2. [Step 2 description]
+// 3. [Final output requirements]
+//
+// MAINTENANCE NOTES:
+// - If [condition] changes, update [specific function]
+// - Always test with [specific scenarios]
+// - File sizes >X may cause [specific issues]
+//
+// ========================================
+```
+
+### **3.2 Testing Scripts**
+```javascript
+// ========================================
+// AI ASSISTANT CONTEXT NOTES
+// ========================================
+//
+// PURPOSE OF THIS TESTING SYSTEM:
+// Creates [testing approach] for validating [specific functionality]
+//
+// TESTING STRATEGY:
+// 1. [Test type 1]: Validates [specific aspect]
+// 2. [Test type 2]: Ensures [specific behavior]
+// 3. [Integration tests]: Verify [system interactions]
+//
+// GOOGLE TEST SIMILARITIES:
+// - [Feature 1]: [How it mimics Google Test]
+// - [Feature 2]: [Testing pattern used]
+//
+// USAGE FOR OTHER PROJECTS:
+// This pattern can be adapted by:
+// - Replace [domain-specific tests] with [your domain]
+// - Keep [structural elements]
+// - Add [project-specific requirements]
+//
+// ========================================
+```
+
+### **3.3 Configuration Files**
+```javascript
+// ========================================
+// AI ASSISTANT CONTEXT NOTES
+// ========================================
+//
+// PURPOSE OF THIS CONFIGURATION:
+// Centralizes settings for [system name] to control [behaviors]
+//
+// CONFIGURATION STRUCTURE:
+// - [Section 1]: Controls [specific functionality]
+// - [Section 2]: Manages [specific behavior]
+// - Boolean flags: Enable/disable [features]
+//
+// DEPENDENCIES:
+// - Used by: [list of files that read this config]
+// - Affects: [list of systems that change behavior]
+//
+// MODIFICATION RULES:
+// - Never change [critical settings] without [specific precautions]
+// - Test changes with [specific scenarios]
+// - Some settings require [restart/recompilation]
+//
+// ========================================
+```
+
+## **Phase 4: Context Preservation Strategies**
+
+### **4.1 Session Continuity**
+**To maintain context across sessions:**
+
+1. **Always read context notes first** when resuming work
+2. **Update notes immediately** after making changes
+3. **Document decision reasoning** for future reference
+4. **Link related files** in context notes
+5. **Maintain change history** in fixes section
+
+### **4.2 Preventing Accidental Breakage**
+**Use context notes to prevent:**
+
+1. **Removing critical code** - Mark essential sections
+2. **Breaking dependencies** - Document what depends on what
+3. **Changing interfaces** - Document expected inputs/outputs
+4. **Ignoring constraints** - Highlight critical requirements
+5. **Regression bugs** - Document previous fixes
+
+### **4.3 Knowledge Transfer**
+**Context notes enable:**
+
+1. **Quick onboarding** - New AI sessions understand context immediately
+2. **Debugging assistance** - Clear history of what was tried
+3. **Maintenance guidance** - What to be careful about
+4. **Testing direction** - How to verify functionality
+5. **Architecture understanding** - Why decisions were made
+
+## **Phase 5: Implementation Checklist**
+
+### **5.1 Before Creating Any File**
+□ Have I defined the clear purpose?
+□ Do I understand the requirements and constraints?
+□ Have I identified potential dependencies?
+□ Do I know how this will be tested?
+□ Am I prepared to document the approach?
+
+### **5.2 While Writing Code**
+□ Am I adding context notes as I go?
+□ Am I documenting complex logic inline?
+□ Am I noting any fixes or workarounds?
+□ Am I considering future maintenance needs?
+□ Am I preserving existing functionality?
+
+### **5.3 After Completing Work**
+□ Have I added comprehensive context notes?
+□ Have I documented all inputs and outputs?
+□ Have I noted any side effects or dependencies?
+□ Have I explained any fixes or workarounds?
+□ Have I provided testing guidance?
+
+## **Remember: Context Notes Are Your Future Self's Best Friend**
+
+Every context note you write today prevents confusion, bugs, and wasted time tomorrow. Treat context documentation as essential as the code itself - because understanding WHY is often more important than understanding WHAT.
+
+**Context preservation is professional software development.**

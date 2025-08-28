@@ -1,0 +1,68 @@
+{
+  "folders": [
+    {
+      "name": "🔍 Investigation Root",
+      "path": "."
+    },
+    {
+      "name": "📊 Analysis & Documentation", 
+      "path": "./documentation"
+    },
+    {
+      "name": "📈 Analysis Results",
+      "path": "./analysis"
+    },
+    {
+      "name": "📜 Investigation History",
+      "path": "./history"
+    },
+    {
+      "name": "⚙️ Cursor Rules",
+      "path": "./cursor-rules"
+    },
+    {
+      "name": "☕ Java Backend (Subject)",
+      "path": "./repositories/retro_backend_java"
+    },
+    {
+      "name": "💎 Ruby Rails (Subject)", 
+      "path": "./repositories/arcadenet"
+    },
+    {
+      "name": "⚡ C++ Engine (Subject)",
+      "path": "./repositories/CE-AtGames"
+    },
+    {
+      "name": "🖥️ Qt Menu (Subject)",
+      "path": "./repositories/dongle_menu_qt"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/target": true,
+      "**/build": true,
+      "**/.git": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/target": true,
+      "**/build": true,
+      "**/.git": true
+    },
+    "editor.rulers": [80, 120],
+    "editor.wordWrap": "on",
+    "markdown.preview.fontSize": 14,
+    "java.compile.nullAnalysis.mode": "automatic"
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-json",
+      "yzhang.markdown-all-in-one", 
+      "ms-vscode.cmake-tools",
+      "ms-vscode.cpptools",
+      "redhat.java",
+      "rebornix.ruby"
+    ]
+  }
+}

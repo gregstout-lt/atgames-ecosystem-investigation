@@ -1,0 +1,142 @@
+---
+description: Professional debugging methodology for AI assistants - systematic approach to problem-solving with mandatory user verification steps
+globs: "**/*"
+alwaysApply: true
+---
+
+# Professional Debugging Methodology for AI Assistants
+
+## **Core Principle: Stop, Think, Plan, Execute**
+
+Never jump between solutions. Always follow this systematic approach.
+
+## **Phase 1: Problem Analysis (MANDATORY)**
+
+### **1.1 Capture the Exact Problem**
+- **Document the exact error message** - copy/paste the full error, not summaries
+- **Identify the specific failing component** - don't guess, trace the error to its source
+- **Note the environment** - OS, Python version, package versions, etc.
+
+### **1.2 Research the Root Cause**
+- **Research the specific error** - use web search to understand WHY this error occurs
+- **Find proven solutions** - look for others who solved this exact problem
+- **Understand the underlying issue** - don't just apply band-aid fixes
+
+### **1.3 Document Current State**
+- **List what works** - don't break working components
+- **List what doesn't work** - be specific about failures
+- **Note any recent changes** - what triggered the problem?
+
+## **Phase 2: Solution Planning (MANDATORY)**
+
+### **2.1 Research-Based Solution Design**
+- **Rank solutions by probability of success** - based on research findings
+- **Identify dependencies between solutions** - what must happen first?
+- **Plan rollback strategies** - how to undo if solution fails?
+- **Estimate time and complexity** - choose appropriate solutions
+
+### **2.2 Test Strategy Development**
+- **Define success criteria** - how will you know it worked?
+- **Plan incremental testing** - test each step before proceeding
+- **Identify potential side effects** - what could break?
+
+## **Phase 3: Implementation (SYSTEMATIC)**
+
+### **3.1 Execute One Solution at a Time**
+- **Implement the highest-probability solution first**
+- **Test thoroughly after each step**
+- **Document what was changed**
+- **Stop and reassess if solution fails**
+
+### **3.2 Validation and Testing**
+- **Verify the fix works** - test the original problem
+- **Check for side effects** - ensure nothing else broke
+- **Document the working solution** - for future reference
+
+## **Phase 4: Documentation and Cleanup**
+
+### **4.1 Document the Solution**
+- **Record the root cause** - what actually caused the problem?
+- **Document the working solution** - step-by-step instructions
+- **Note lessons learned** - what could be done better next time?
+
+### **4.2 Clean Up**
+- **Remove temporary files** - clean up any test files or scripts
+- **Update documentation** - reflect any permanent changes
+- **Share knowledge** - help others avoid the same problem
+
+---
+
+## **User Interaction Requirements (CRITICAL)**
+
+### **Always Get User Verification**
+- **Show outputs before proceeding** - let user verify before next step
+- **Ask permission for system changes** - installing packages, creating files
+- **Update task lists for review** - keep user informed of progress
+- **Wait for user feedback** - don't assume and continue
+
+### **File Management**
+- **Create test files in subdirectories** - use `test/` or `temp/` folders
+- **Ask before installing packages** - respect user's system
+- **Clean up after testing** - remove temporary files when done
+
+### **Communication**
+- **Update task lists immediately** - show current progress
+- **State when waiting for user input** - be clear about next steps
+- **Document what you're doing** - explain your approach
+
+---
+
+## **Special Case: Python Dependency Conflicts**
+
+### **Understanding Dependency Conflicts**
+- **Binary incompatibility** - when packages compiled against different library versions conflict
+- **Version constraints** - when packages require incompatible versions of the same dependency
+- **Transitive dependencies** - when dependencies of dependencies conflict
+
+### **Research-Based Solutions (in order of preference)**
+
+**1. Version Pinning (Highest Success Rate)**
+- Pin to compatible versions based on research
+- Use NEP 29 guidelines for Python/NumPy compatibility
+- Example: `pip install numpy==1.22.0` for TTS compatibility
+
+**2. Virtual Environment Isolation**
+- Create clean environments for different projects
+- Use `python -m venv` or `conda` for isolation
+- Never mix development environments
+
+**3. Dependency Tools**
+- Use `pip-tools` for systematic dependency management
+- Create `requirements.in` for top-level dependencies
+- Generate `requirements.txt` with `pip-compile`
+
+**4. Package-Specific Solutions**
+- Install packages `--no-deps` then add dependencies manually
+- Use `--only-binary` flags to avoid compilation issues
+- Research package-specific compatibility matrices
+
+## **Mandatory Checklist Before Each Solution Attempt**
+
+□ Have I researched this specific error?
+□ Do I understand the root cause?
+□ Have I documented the current state?
+□ Do I have a rollback plan?
+□ Are my success criteria clear?
+□ Have I tested any assumptions?
+□ Have I gotten user verification before proceeding?
+□ Are test files in appropriate subdirectories?
+
+## **Red Flags - Stop and Research More**
+
+- "Let me try a different approach" without understanding why the first failed
+- Installing/uninstalling packages without clear reasoning
+- Changing multiple things at once
+- Ignoring error messages or warnings
+- Assuming solutions work without testing
+- Proceeding without user verification
+- Creating files in main code directory instead of test subdirectory
+
+## **Remember: Trust But Verify**
+
+Have confidence in your ideas, but always verify with research and testing. Time spent on proper research and planning saves exponentially more time than trial-and-error approaches. Always get user verification before proceeding to the next step.

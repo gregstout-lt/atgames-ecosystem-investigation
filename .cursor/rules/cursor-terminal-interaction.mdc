@@ -1,0 +1,315 @@
+---
+alwaysApply: true
+---
+# General Terminal Interaction Guidelines
+
+## Core Principles
+
+### 1. NEVER Wait Indefinitely
+- Set expectations for command completion time
+- Use timeout mechanisms when available
+- Have exit strategies for all interactive commands
+- Monitor command output actively
+
+### 2. Background Process Management
+- Use background processes (`&`) for long-running commands
+- Use `nohup` for processes that should survive session termination
+- Use `screen` or `tmux` for persistent sessions
+- Monitor background jobs with `jobs` and `fg`/`bg`
+
+### 3. Non-Interactive Alternatives First
+- Always prefer non-interactive flags and options
+- Use batch processing over interactive sessions
+- Create input files for complex operations
+- Use environment variables instead of prompts
+
+## Command Structure Best Practices
+
+### Input Redirection and Piping
+```bash
+# Good: Non-interactive with input file
+command < input.txt > output.txt
+
+# Good: Piped input
+echo "input" | command
+
+# Good: Here document for multi-line input
+command << EOF
+line1
+line2
+EOF
+```
+
+### Timeout and Process Control
+```bash
+# Use timeout for commands that might hang
+timeout 30s long-running-command
+
+# Use timeout with fallback
+timeout 30s command || echo "Command timed out"
+
+# Background with process monitoring
+command &
+PID=$!
+sleep 5
+if kill -0 $PID 2>/dev/null; then
+    echo "Process still running"
+else
+    echo "Process completed"
+fi
+```
+
+### File-Based Operations
+```bash
+# Create temporary files for complex operations
+TEMP_INPUT=$(mktemp)
+cat > $TEMP_INPUT << EOF
+complex input
+multiple lines
+EOF
+
+command < $TEMP_INPUT
+rm $TEMP_INPUT
+```
+
+## Interactive Command Handling
+
+### Avoid These Patterns
+```bash
+# BAD: Interactive without plan
+interactive-tool
+
+# BAD: Waiting for user input
+read -p "Enter value: " value
+
+# BAD: Commands that might hang
+curl http://unreliable-site.com
+```
+
+### Use These Patterns Instead
+```bash
+# GOOD: Non-interactive with flags
+interactive-tool --non-interactive --input="value"
+
+# GOOD: Pre-planned input
+echo "value" | interactive-tool
+
+# GOOD: Timeout protection
+timeout 10s curl http://unreliable-site.com
+```
+
+## Background Process Guidelines
+
+### When to Use Background Processes
+- Long-running operations (> 30 seconds)
+- Monitoring tasks
+- Server processes
+- Data processing jobs
+
+### Background Process Management
+```bash
+# Start background process
+long-running-command &
+PID=$!
+
+# Check if process is still running
+if kill -0 $PID 2>/dev/null; then
+    echo "Process $PID is running"
+fi
+
+# Wait for background process
+wait $PID
+echo "Process completed with exit code: $?"
+```
+
+### Persistent Background Processes
+```bash
+# Use nohup for session-independent processes
+nohup long-running-command > output.log 2>&1 &
+
+# Use screen/tmux for interactive persistence
+screen -dmS session-name command
+# Later: screen -r session-name
+```
+
+## Error Handling and Recovery
+
+### Graceful Failure Handling
+```bash
+# Set exit on error
+set -e
+
+# Handle specific errors
+if ! command; then
+    echo "Command failed, trying alternative"
+    alternative-command
+fi
+
+# Use trap for cleanup
+trap 'echo "Cleaning up"; rm -f $TEMP_FILE' EXIT
+```
+
+### Signal Handling
+```bash
+# Handle interruption gracefully
+trap 'echo "Interrupted, cleaning up"; exit 1' INT TERM
+
+# Ignore certain signals
+trap '' HUP
+```
+
+## Performance and Efficiency
+
+### Parallel Processing
+```bash
+# Run commands in parallel
+command1 &
+command2 &
+command3 &
+wait  # Wait for all to complete
+
+# Use xargs for parallel operations
+echo -e "item1\nitem2\nitem3" | xargs -n1 -P3 process-item
+```
+
+### Resource Management
+```bash
+# Limit CPU usage
+nice -n 19 cpu-intensive-command
+
+# Limit memory usage (Linux)
+ulimit -v 1000000  # Limit virtual memory to ~1GB
+```
+
+## Monitoring and Logging
+
+### Output Redirection
+```bash
+# Capture both stdout and stderr
+command > output.log 2>&1
+
+# Separate stdout and stderr
+command > output.log 2> error.log
+
+# Tee for both file and console output
+command | tee output.log
+```
+
+### Process Monitoring
+```bash
+# Monitor process resource usage
+top -p $PID
+
+# Monitor file changes
+tail -f logfile.log
+
+# Monitor command progress
+pv input.txt | command > output.txt
+```
+
+## Platform-Specific Considerations
+
+### macOS/Darwin
+```bash
+# Use BSD-style commands
+ps -ax instead of ps -ef
+stat -f %z file instead of stat -c %s file
+```
+
+### Linux
+```bash
+# Use GNU-style commands
+ps -ef
+stat -c %s file
+```
+
+### Windows (WSL/Git Bash)
+```bash
+# Handle path differences
+winpath=$(wslpath -w "$linuxpath")
+
+# Use Windows-compatible commands when needed
+cmd.exe /c "windows-command"
+```
+
+## Emergency Procedures
+
+### If Terminal Becomes Unresponsive
+1. Use `Ctrl+C` to interrupt current command
+2. Use `Ctrl+Z` to suspend current command
+3. Use `bg` to resume suspended command in background
+4. Use `fg` to bring background command to foreground
+5. Use `kill` or `killall` to terminate specific processes
+
+### Process Recovery
+```bash
+# Find and kill hanging processes
+ps aux | grep command-name
+kill -9 PID
+
+# Kill all processes by name
+killall -9 command-name
+
+# Force kill all background jobs
+jobs -p | xargs kill -9
+```
+
+## Automation Best Practices
+
+### Script Structure
+```bash
+#!/bin/bash
+set -euo pipefail  # Exit on error, undefined vars, pipe failures
+
+# Configuration
+TIMEOUT=30
+RETRIES=3
+
+# Function with error handling
+run_with_retry() {
+    local cmd="$1"
+    local attempts=0
+    
+    while [ $attempts -lt $RETRIES ]; do
+        if timeout $TIMEOUT $cmd; then
+            return 0
+        fi
+        ((attempts++))
+        echo "Attempt $attempts failed, retrying..."
+        sleep 2
+    done
+    
+    echo "Command failed after $RETRIES attempts"
+    return 1
+}
+```
+
+### Testing Commands
+```bash
+# Test command existence
+if command -v tool >/dev/null 2>&1; then
+    echo "Tool is available"
+else
+    echo "Tool not found"
+fi
+
+# Test file permissions
+if [ -x "script.sh" ]; then
+    ./script.sh
+else
+    chmod +x script.sh
+    ./script.sh
+fi
+```
+
+## Mandatory Pre-Command Checklist
+
+- [ ] Is this command interactive?
+- [ ] Do I have a timeout strategy?
+- [ ] Are there non-interactive alternatives?
+- [ ] Will this command complete within reasonable time?
+- [ ] Do I have a cleanup strategy?
+- [ ] Is this command suitable for background execution?
+- [ ] Do I have error handling in place?
+
+Remember: **Plan your command execution. Never wait indefinitely. Always have an exit strategy.**

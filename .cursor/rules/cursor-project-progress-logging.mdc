@@ -1,0 +1,39 @@
+---
+description: This rule ensures systematic project tracking by updating PROJECT-PROGRESS-LOG.md every 5 message exchanges (user message → assistant response = 1 exchange). It maintains historical context for session continuity, documents key decisions, tracks file changes, and preserves institutional knowledge across Cursor restarts. Critical for maintaining project momentum and preventing context loss.
+globs: 
+alwaysApply: true
+---
+
+# Project Progress Logging System
+
+## Exchange Counter & Update Triggers
+- Track message exchanges: user message → assistant response = 1 exchange
+- Update PROJECT-PROGRESS-LOG.md every 5 exchanges
+- Reset counter after each log update
+
+## Required Log Entry Format
+Each new entry must include:
+- **Goal:** What we're trying to accomplish in this iteration
+- **Actions:** Specific steps taken (be concise, 2-3 bullets max)
+- **Key Decisions:** Important choices made with brief reasoning
+- **Files Created/Modified:** List with brief description
+- **Status:** Current state (✅ Complete, 🔄 In Progress, ❌ Blocked)
+- **Next Steps:** What comes next (1-2 items max)
+
+## Conciseness Requirements
+- Keep entries bite-sized and focused
+- Avoid lengthy explanations - capture essence only
+- Focus on progress from 5 exchanges ago to now
+- Maximum 6-8 lines per entry section
+
+## Integration with Session Continuation
+- Update SESSION-CONTINUATION.md for immediate restart needs
+- PROJECT-PROGRESS-LOG.md maintains comprehensive history
+- Reference relevant log entries when explaining context
+
+## Critical Rules
+- ALWAYS update log at 5-exchange intervals
+- NEVER skip log updates even for minor work
+- Maintain chronological entry numbering (#001, #002, etc.)
+- Update Status Summary section with current totals
+- Keep "Current Blocker" and "Immediate Next" sections current

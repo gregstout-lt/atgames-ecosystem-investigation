@@ -1,0 +1,201 @@
+---
+description: Professional development methodology for building robust applications - systematic approach to planning, implementing, and testing code changes
+globs: "**/*"
+alwaysApply: true
+---
+
+# Development Methodology for AI Assistants
+
+## **Core Principle: Plan, Research, Build, Test**
+
+Always follow this systematic approach for building features and making changes.
+
+## **Phase 1: System Mapping and Context Creation (MANDATORY)**
+
+### **1.1 Create Technical Reference Map**
+- **Map all existing functions, constants, and components** - document what currently exists
+- **Document relationships and dependencies** - how components interact
+- **Create functionality overview tables** - tabular summaries organized by functional area
+- **Focus on understanding, not reorganizing** - map what exists before making changes
+
+### **1.2 Annotate All Coding Sections**
+- **Add AI ASSISTANT CONTEXT NOTES to each significant file**
+- **Include system integration context and dependencies**
+- **Document purpose, key functions, and requirements**
+
+**Example Context Block:**
+```javascript
+// ========================================
+// AI ASSISTANT CONTEXT NOTES
+// ========================================
+//
+// SYSTEM: Inventory Management - Core Functions
+//
+// PURPOSE OF THIS FILE:
+// Handles item manipulation and player inventory operations
+//
+// KEY FUNCTION GROUPS:
+// - Inventory Management: doTake(), doDrop(), doGive()
+// - Equipment Handling: doEquip(), doUnequip()
+//
+// REQUIREMENTS:
+// - Must integrate with character state system
+// - All functions return formatted text responses
+//
+// EDITS APPLIED:
+// - 2024-01-15 14:30: Fixed item quantity validation - handle negative values
+//
+// DEPENDENCIES:
+// - character.js: getCharacter() function
+// - utilities.js: getArgument() function
+//
+// ========================================
+```
+
+### **1.3 Working with Large Existing Systems**
+
+#### **For General System Understanding:**
+- **Create functionality maps** - tables showing functions, purpose, parameters, location
+- **Group related functions** - organize by functional area (e.g., "Inventory Management", "User Authentication")
+- **Document integration points** - how components interact
+
+**Example Functionality Map:**
+| **Function Name** | **Purpose** | **Parameters** | **Location** | **Dependencies** |
+|------------------|-------------|----------------|-------------|------------------|
+| `doTake(command)` | Handle item pickup | command: string | inventory.js:29 | getCharacter(), getArgument() |
+| `doDrop(item, qty)` | Handle item dropping | item: string, qty: number | inventory.js:87 | updateInventory() |
+
+#### **For File Decomposition Projects:**
+- **Create detailed line mapping tables** - track original and component locations
+- **Include status tracking** - what's been moved vs what remains
+- **Document component relationships** - how pieces fit back together
+
+**When to use each:**
+- **Functionality maps**: Understanding existing systems, planning modifications
+- **Decomposition maps**: Breaking large files into smaller components
+
+## **Phase 2: Define and Plan (MANDATORY)**
+
+### **2.1 Define the Problem/Goal**
+- **Document exactly what needs to be built** - capture precise requirements
+- **Identify the MVP (Minimum Viable Product)** - smallest working version first
+- **Define success criteria** - how will you know it's working?
+- **Set boundaries** - what is explicitly NOT in scope for this iteration?
+
+### **2.2 Create Implementation Plan**
+- **Break into discrete, testable steps** - each under 300 lines
+- **Identify reusable components** - avoid duplication
+- **Plan testing strategy** - how to verify each step
+- **Consider environment requirements** - dev/test/prod implications
+
+## **Phase 3: Research Before Building**
+
+### **3.1 Research Requirements**
+- **Always assume training data is dated** - verify current information
+- **Provide source of research data** - include links and specific documentation references
+- **MANDATORY RESEARCH RULE:** For APIs, external platforms, third-party systems:
+  - STOP and identify if task involves external systems
+  - Research current documentation using web search
+  - Verify syntax, parameters, and recent changes
+  - Look for 2024/current examples
+  - NEVER assume training data is current
+- **State research actions explicitly** - "Researching current [system] documentation to ensure accuracy"
+- **Document research findings vs assumptions** - what was verified vs what was assumed
+- **Check existing codebase** - search for similar implementations
+- **Review official documentation** - understand APIs and libraries
+
+## **Phase 4: Implementation (SYSTEMATIC)**
+
+### **4.1 Build in Layers**
+- **Start with core functionality** - get basic version working first
+- **Implement one feature at a time** - avoid scope creep
+- **Test each layer before proceeding** - build on solid foundation
+- **Seek user feedback after each major milestone** - ensure alignment
+
+### **4.2 Code Quality Standards**
+- **Follow existing patterns** - maintain consistency with codebase
+- **Keep functions discrete and reusable** - enhance testability
+- **Include targeted error handling** - try-catch for API calls
+- **Add AI Assistant Context Notes while working on functions** - document as you modify
+- **Offer unit tests for modified functions** - "Should I add unit tests for these changes?"
+- **Document shared utilities** - explain purpose and usage clearly
+
+**Function Context Guidelines:**
+- Add context notes when modifying or creating functions
+- Include purpose, parameters, and integration requirements
+- Group related functions under descriptive headers (e.g., "Inventory Management Functions")
+- Do not preemptively annotate entire codebase
+
+### **4.3 Environment Management**
+- **Use appropriate environment** - dev for building, test for verification
+- **Never modify .env without permission** - respect configuration
+- **Use mock data only in test environments** - never in dev/prod
+- **Maintain separation** - keep environments distinct
+
+## **Phase 5: Testing and Validation**
+
+### **5.1 Incremental Testing**
+- **Test core functionality first** - verify basic operation
+- **Write unit tests for discrete functions** - use appropriate framework
+- **Verify in dev environment** - before proposing for prod
+- **Test edge cases** - handle error conditions
+
+### **5.2 User Validation**
+- **Demonstrate working functionality** - show concrete results
+- **ALWAYS get feedback before expanding** - never assume scope extension
+- **Propose small, incremental changes** - maintain reviewability
+- **Use "Apply Changes" feature** - let user review before applying
+- **Never commit code without user's explicit permission** - always ask before git operations
+
+## **Phase 6: Integration and Cleanup**
+
+### **6.1 Code Integration**
+- **Check for duplication** - refactor common patterns
+- **Update documentation** - reflect changes made
+- **Clean up temporary files** - maintain tidy codebase
+- **Follow version control practices** - clear commit messages
+
+### **6.2 Knowledge Sharing and Documentation**
+- **Update Technical Reference Maps** - reflect new functions and changes
+- **Update Implementation Plans** - mark completed steps, note discoveries
+- **Document architectural decisions with evidence** - why choices were made and what testing supported them
+- **Create systematic evaluations** - written assessments for future AI reference
+- **Update shared utilities and context notes** - maintain current documentation
+- **Record lessons learned with supporting evidence** - what worked/failed and why
+- **Ensure auto-log integration** - add `require('./ai-session-tools/auto-log-check.js')` to new scripts
+
+---
+
+## **Session Initialization (ALWAYS CHECK FIRST)**
+
+□ **Auto-log system active**: Verify key scripts include `require('./ai-session-tools/auto-log-check.js')` at top
+□ **Review current context**: Check SESSION-CONTINUATION.md for current task and status  
+□ **Check progress log**: Review PROJECT-PROGRESS-LOG.md for recent entries and context
+□ **Verify implementation plan**: Confirm current step and next actions are clear
+
+## **Mandatory Pre-Implementation Checklist**
+
+□ Have I completed session initialization checks above?
+□ Have I created/updated the Technical Reference Map?
+□ Have I defined the exact goal and MVP?
+□ Have I researched external systems/APIs with current documentation?
+□ Have I checked for existing implementations?
+□ Do I have a clear, step-by-step plan?
+□ Have I identified the testing approach with specific verification steps?
+□ Are the success criteria evidence-based and measurable?
+□ Have I confirmed the appropriate environment?
+□ Will I add context notes to functions I'm modifying?
+□ Am I building the minimum viable version first?
+
+## **Success Indicators**
+
+- **Clear requirements** - everyone understands what's being built
+- **Working MVP** - basic functionality demonstrated
+- **Tested implementation** - verified in appropriate environment
+- **Clean, maintainable code** - follows project standards
+- **User satisfaction** - feedback incorporated and requirements met
+- **No scope creep** - stayed within defined boundaries
+
+## **Remember: Build Smart, Not Fast**
+
+Focus on building the right thing correctly rather than building quickly. Time spent on proper planning and research prevents exponentially more time on debugging and rework. Always seek user validation before expanding scope or adding complexity.
